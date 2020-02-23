@@ -6,21 +6,5 @@ spec:
   selector:
     app: nginx
   ports:
-    - port: 10080
+    - port: 80
       targetPort: 80
-  type: NodePort
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: default-ingress
-  namespace: default
-spec:
-  rules:
-    - host: nginx.k8s.io
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: nginx-service
-              servicePort: 10080

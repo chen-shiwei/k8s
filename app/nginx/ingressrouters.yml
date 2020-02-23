@@ -2,7 +2,6 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: redirect-https
-  namespace: kubernetes-dashboard
 spec:
   redirectScheme:
     scheme: https
@@ -10,33 +9,31 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: kubernetes-dashboard
-  namespace: kubernetes-dashboard
+  name: nginx
 spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`dashboard.kubernetes.ml`)
+    - match: Host(`nginx.kubernetes.ml`)
       kind: Rule
       services:
-        - name: kubernetes-dashboard
-          port: 8443
+        - name: nginx-service
+          port: 80
       # middlewares:
       #   - name: redirect-https
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: kubernetes-dashboard-tls
-  namespace: kubernetes-dashboard
+  name: nginx-tls
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`dashboard.kubernetes.ml`)
+    - match: Host(`nginx.kubernetes.ml`)
       kind: Rule
       services:
-        - name: kubernetes-dashboard
-          port: 8443
+        - name: nginx-service
+          port: 80
   tls:
     certResolver: myresolver
